@@ -24,10 +24,10 @@ int countDigits(int number) {
     if (number <  10) return 1;
     return static_cast<int>(log10(number)) + 1;
 }
-    
+
 // bool checkInvalid(int number ){
-//   string firstHalf = to_string(number); 
-  
+//   string firstHalf = to_string(number);
+
 // }
 
 // Calculate multiplier based on number of digits
@@ -41,15 +41,15 @@ int getSmallestInvalid(int number) {
     string numStr = to_string(number);
     int len = numStr.length();
     string firstHalf = numStr.substr(0, (len) / 2);
-    string invalidNum = firstHalf + firstHalf; 
-    
+    string invalidNum = firstHalf + firstHalf;
+
     if (stoll(invalidNum) >= number) {
         return stoll(invalidNum);
     } else {
         // Increment the first half and form the mirror again
         int firstHalfNum = stoll(numStr.substr(0, len / 2)) + 1;
-        invalidNum = to_string(firstHalfNum); 
-        return stoll(invalidNum + invalidNum); 
+        invalidNum = to_string(firstHalfNum);
+        return stoll(invalidNum + invalidNum);
   }
 }
 
@@ -58,12 +58,12 @@ int getLargestInvalid(long number) {
     string numStr = to_string(number);
     int len = numStr.length();
     string firstHalf = numStr.substr(0, (len + 1) / 2);
-    string invalidNum = firstHalf + firstHalf; 
+    string invalidNum = firstHalf + firstHalf;
     if (stoll(invalidNum) <= number){
-      return stoll(invalidNum); 
+      return stoll(invalidNum);
     }
     else {
-      int firstHalf = stoll(numStr.substr(0, len / 2)) - 1; 
+      int firstHalf = stoll(numStr.substr(0, len / 2)) - 1;
       invalidNum = to_string(firstHalf);
       return stoll(invalidNum + invalidNum);
     }
@@ -73,12 +73,12 @@ string getInvalids(long lower, long upper, long multiplier){
   if (lower == upper){
     return to_string(lower);
   }
-  string results = ""; 
+  string results = "";
   while (lower < upper) {
-    results += to_string(lower); 
-    lower += multiplier; 
+    results += to_string(lower);
+    lower += multiplier;
   }
-  return results; 
+  return results;
 }
 // int numInvalids(long lower, long upper, long multiplier){
 //     if (upper < lower) return 0;
@@ -88,25 +88,25 @@ string getInvalids(long lower, long upper, long multiplier){
 // Function to count invalid IDs in a range
 string countInvalidIds(long lower, long upper) {
     int minInvalid;
-    int maxInvalid; 
-    
+    int maxInvalid;
+
     int smallDigits = countDigits(lower);
     int largeDigits = countDigits(upper);
-    
-    string global_result = ""; 
+
+    string global_result = "";
     // If lower has odd digits, skip to next even digit count
     if (smallDigits % 2 != 0) {
         minInvalid = static_cast<int>(pow(10, smallDigits));
         smallDigits++;
-    } 
+    }
     if (largeDigits % 2 != 0 ){
         maxInvalid = static_cast<int>(pow(10, largeDigits - 1));
-        largeDigits--; 
+        largeDigits--;
     }
     minInvalid = getSmallestInvalid(lower);
     maxInvalid = getLargestInvalid(upper);
-    cout << "\n\nMin Range: " << lower << "\t Max Range: " << upper << "\t Min Invalid" << minInvalid << "\t Max Invalid" << maxInvalid; 
-    cout << "\nSmallest invalid <= " << getSmallestInvalid(minInvalid) 
+    cout << "\n\nMin Range: " << lower << "\t Max Range: " << upper << "\t Min Invalid" << minInvalid << "\t Max Invalid" << maxInvalid;
+    cout << "\nSmallest invalid <= " << getSmallestInvalid(minInvalid)
              << "\t Largest invalid >=: " << getLargestInvalid(maxInvalid) << "\t Small Digits: "<< smallDigits << "\t Large Digits: " << largeDigits;
 
     // Process ranges by digit count (incrementing by 2 for even digits only)
@@ -115,19 +115,19 @@ string countInvalidIds(long lower, long upper) {
         int nextMaxMirror = static_cast<int>(pow(10, smallDigits)) + static_cast<int>(pow(10, smallDigits / 2)) - multiplier;
         global_result += getInvalids(minInvalid, nextMaxMirror, multiplier);
         cout << "\nCounting invalid IDs from " << minInvalid << " to " << nextMaxMirror << " with multiplier " << multiplier << ": " << global_result;
-        
+
         smallDigits += 2;
         minInvalid = static_cast<int>(pow(10, smallDigits - 1)) + static_cast<int>(pow(10, smallDigits / 2));
     }
-    
+
     // Count remaining invalid IDs in the final range
     if (smallDigits == largeDigits && minInvalid <= maxInvalid) {
         int multiplier = getMultiplier(smallDigits);
         global_result += getInvalids(minInvalid, maxInvalid, multiplier);
-        cout << "\nCounting invalid IDs from " << minInvalid << " to " << maxInvalid 
+        cout << "\nCounting invalid IDs from " << minInvalid << " to " << maxInvalid
              << " with multiplier " << multiplier << ": " << global_result;
     }
-    return global_result; 
+    return global_result;
 }
 
 int main() {
@@ -137,7 +137,7 @@ int main() {
     vector<pair<int, int>> ranges;
     stringstream ss(input);
     string rangeStr;
-    string results; 
+    string results;
     // Split input by commas and parse each range
     while (getline(ss, rangeStr, ',')) {
         ranges.push_back(parseRange(rangeStr));
@@ -146,9 +146,9 @@ int main() {
     // Process each range
     for (const auto& range : ranges) {
         results += countInvalidIds(range.first, range.second);
-        cout << "\nResult State: " << results; 
+        cout << "\nResult State: " << results;
     }
-    
+
     cout << endl;
     return 0;
 }

@@ -19,7 +19,7 @@ int dial( const std::vector<std::string>& input) {
     int count = 0;
 
     int position = 50;
-    int old_position = 50; 
+    int old_position = 50;
     for (const auto& line : input) {
         // cout << line[0];
         if (line[0] == 'L') {
@@ -27,7 +27,7 @@ int dial( const std::vector<std::string>& input) {
         } else if (line[0] == 'R') {
             position += std::stoi(line.substr(1));
         }
-        
+
         if (position < 0 && old_position == 0){
           count += (abs(position)/100);
         }
@@ -43,9 +43,9 @@ int dial( const std::vector<std::string>& input) {
 
         position%=100;
         if (position < 0)
-          position += 100; 
+          position += 100;
         // cout << "\nline: " << line << "\tOld Position" << old_position << "\tposition: " << position << "\t Count: " << count;
-        old_position = position; 
+        old_position = position;
     }
     return count;
 }
