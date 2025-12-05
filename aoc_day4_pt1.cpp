@@ -1,5 +1,9 @@
+
 #include <iostream>
+#include <fstream>
 #include <vector>
+#include "load.h"
+
 using namespace std;
 
 bool checkSurrounding(vector<string> grid, int pos_x, int pos_y, int maxRows){
@@ -23,25 +27,20 @@ bool checkSurrounding(vector<string> grid, int pos_x, int pos_y, int maxRows){
 }
 
 int main() {
-    std::vector<std::string> grid;
-    int result = 0;
-    std::string line;
+  std::vector<std::string> grid;
+  int result = 0;
+  std::string line;
+  Load loader("data/day4.txt", TYPE_STRING);
+  loader.processFile();
+  int rows = grid.size();
+  int columns = grid.empty() ? 0 : grid[0].size();
 
-    while (std::getline(std::cin, line)) {
-        if (!line.empty()) {
-            grid.push_back(line);
-        }
+  for (int r = 0; r < rows; r++) {
+    for (int c = 0; c < grid[r].length(); c++) {
+      if (checkSurrounding(grid, r, c, rows)) result++;
     }
+  }
 
-    int rows = grid.size();  // Fixed: added 'int' and semicolon
-    int columns = grid[0].size();  // Added for clarity
-
-    for (int r=0; r<rows; r++) {  // Fixed: moved 'r' inside scope
-      for (int c=0; c<grid[r].length(); c++) {  // Fixed: initialize c=0, added braces
-        if (checkSurrounding(grid, r, c, rows)) result++;  // Fixed: added 'int'
-      }
-    }
-
-    cout << "Result: " << result << endl;  // Fixed: changed to result instead of sum
-    return 0;
+  cout << "Result: " << result << endl;
+  return 0;
 }
